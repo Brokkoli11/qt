@@ -11,7 +11,7 @@ MintaWidget::MintaWidget(QWidget *parent)
     _mainColumn = new QVBoxLayout;
     _buttonGrid = new QGridLayout;
     _newGameButton = new QPushButton ("Új játék");
-    _model = new NemMintaModel;
+    _model = new Mintamodel;
     _sizeDialog = nullptr;
 
     setLayout(_mainColumn);
