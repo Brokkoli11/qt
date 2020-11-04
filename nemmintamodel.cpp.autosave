@@ -1,0 +1,59 @@
+#include "nemmintamodel.h"
+
+NemMintaModel::NemMintaModel(QObject *parent) : QObject(parent)
+{
+    _timer = new QTimer;
+    _timer->setInterval(1000); // 1 másodperc
+    connect(_timer,SIGNAL(timeout()),this,SLOT(timerTicked()));
+}
+
+void NemMintaModel::startNewGame(int size)
+{
+    _n = size;
+    _fields.clear();
+
+    for(int i=0;i<size;i++) {
+        QVector<int> v;
+        for(int j=0;j<size;j++) {
+            v.push_back(0);
+        }
+        _fields.push_back(v);
+    }
+
+    //Itt átállítani bizonyos mezőket amiket a feladat kér
+
+    gameStarted();
+    _elapsedTime = 0;
+    _timer->start();
+
+}
+
+int NemMintaModel::n() const
+{
+    return _n;
+}
+
+int NemMintaModel::getField(int i, int j)
+{
+    return _fields[i][j];
+}
+
+int NemMintaModel::getElapsedTime() const
+{
+    return _elapsedTime;
+}
+
+void NemMintaModel::fieldPressed(int ind)
+{
+    int i=ind/_n;
+    int j = ind%_n;
+    qDebug() << i << "\t" << j << "\n";
+    //Csinálni valamit a boarddal, ha kell
+    fieldsChanged();
+}
+
+void NemMintaModel::timerTicked()
+{
+    _elapsedTime++;
+    fieldsChanged();
+}
